@@ -265,6 +265,7 @@ def FindSolution():
                game.initColor(matrix)
                game.update()
                game.change_Color(init[0], init[1], "#00EE00")
+               return [1]
           else:
                #BFS
                if game.handleCombobox() == 1:  
