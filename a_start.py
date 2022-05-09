@@ -1,5 +1,5 @@
 from math import sqrt
-from maze import maze
+from maze import maze, maze3
 from index import Node, MazeProblem
 
 
@@ -10,7 +10,6 @@ def a_start(problem):
     open_list, closed_list = [start_node], []
 
     while len(open_list) > 0:
-
         current_node = open_list[0]
         current_index = 0
         for index, item in enumerate(open_list):
@@ -20,23 +19,39 @@ def a_start(problem):
 
         # Pop current off open list, add to closed list
         open_list.pop(current_index)
-        closed_list.append(current_node)
+
+        if current_node not in closed_list:
+            closed_list.append(current_node)
 
         # Check if we found the goal
         if problem.goal_test(current_node.position):
             return current_node.solution()
 
-        # Loop throught list children
+        # Expand children
+        children = current_node.expand(problem)
 
-        for child in current_node.expand(problem):
+        # Check len children
+        if len(children) == 0:
+            return None
+
+        # Loop throught list children
+        for child in children:
+            flag = False
             for closed_child in closed_list:
                 if child == closed_child:
-                    continue
+                    flag = True
+            # Don't append child exist in explored
+            if flag:
+                continue
+
             # Create the f, g, h values
             child.g = current_node.g + 1
-            child.h = sqrt(
-                ((child.position[0] - problem.goal[0]) ** 2)
-                + ((child.position[1] - problem.goal[1]) ** 2)
+            # child.h = sqrt(
+            #     ((child.position[0] - problem.goal[0]) ** 2)
+            #     + ((child.position[1] - problem.goal[1]) ** 2)
+            # )
+            child.h = abs((child.position[0] - problem.goal[0])) + abs(
+                (child.position[1] - problem.goal[1])
             )
             child.f = child.g + child.h
 
@@ -51,13 +66,15 @@ def a_start(problem):
                 continue
 
             # Add the child to the open list
-            open_list.append(child)
+            if child not in open_list:
+                open_list.append(child)
+    return None
 
 
 # if __name__ == "__main__":
-#     init = (0, 0)
-#     goal = (9, 9)
-#     problem = MazeProblem(init, goal, maze)
+#     init = (0, 9)
+#     goal = (9, 0)
+#     problem = MazeProblem(init, goal, maze3)
 
 #     solution = a_start(problem)
 #     print(solution)
