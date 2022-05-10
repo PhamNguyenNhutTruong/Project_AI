@@ -2,7 +2,7 @@ import time
 import tkinter as tk
 from collections import deque
 from tkinter import  ttk
-import a_start ,bfs, dfs, dls,index, maze
+import a_start ,bfs, dfs, index, maze
 from tkinter import messagebox 
 
 sizeOfMatrix = 20
@@ -15,7 +15,7 @@ class Game(tk.Frame):
           self.grid()
           self.master.title('Project AI')
           self.main_grid = tk.Frame(self, bg= "black", bd=3, width=400, height=400)
-          self.main_grid.grid(pady=(15, 15), padx=(20, 380))
+          self.main_grid.grid(pady=(15, 10), padx=(15, 380))
 
 
      def make_GUI(self):
@@ -46,7 +46,7 @@ class Game(tk.Frame):
           comboboxAlgorithm_frame.place(x= 730, y = 80)
           comboboxAlgorithm = ttk.Combobox(comboboxAlgorithm_frame, width = 30, textvariable= self.selectAlgorithm)
                # Adding combobox drop down list
-          comboboxAlgorithm['values'] = ("BFS - Breadth First Search", "DLS - Depth Limit Search", "A* - A Star", "DFS - Depth First Search")
+          comboboxAlgorithm['values'] = ("BFS - Breadth First Search", "A* - A Star", "DFS - Depth First Search")
           comboboxAlgorithm.grid(column = 1, row = 5)
           comboboxAlgorithm.current()
 
@@ -109,7 +109,7 @@ class Game(tk.Frame):
           self.textInitX = tk.StringVar()
           spinboxInitX_frame = tk.Frame(self)
           spinboxInitX_frame.place(x= 635, y = 150)
-          spinboxInitX = tk.Spinbox(spinboxInitX_frame, from_=0, to=19,width=8 ,textvariable=self.textInitX)
+          spinboxInitX = tk.Spinbox(spinboxInitX_frame, from_=0, to=19,width=8,wrap= True ,textvariable=self.textInitX)
           spinboxInitX.grid()
 
           #Init Y-------------------------------------------------------------------------------
@@ -122,7 +122,7 @@ class Game(tk.Frame):
           self.textInitY = tk.StringVar()
           spinboxInitY_frame = tk.Frame(self)
           spinboxInitY_frame.place(x= 635, y = 190)
-          spinboxInitX = tk.Spinbox(spinboxInitY_frame, from_=0, to=19,width=8 ,textvariable=self.textInitY)
+          spinboxInitX = tk.Spinbox(spinboxInitY_frame, from_=0, to=19,width=8, wrap= True ,textvariable=self.textInitY)
           spinboxInitX.grid()
 
           #Label Title Goal----------------------------------------------------------------
@@ -140,7 +140,7 @@ class Game(tk.Frame):
           self.textGoalX = tk.StringVar()
           spinboxGoalX_frame = tk.Frame(self)
           spinboxGoalX_frame.place(x= 870, y = 150)
-          spinboxInitX = tk.Spinbox(spinboxGoalX_frame, from_=0, to=19,width=8 ,textvariable=self.textGoalX)
+          spinboxInitX = tk.Spinbox(spinboxGoalX_frame, from_=0, to=19,width=8, wrap= True ,textvariable=self.textGoalX)
           spinboxInitX.grid()
 
                #Label Enter GoalY----------------------------------------------------------------
@@ -152,7 +152,19 @@ class Game(tk.Frame):
           self.textGoalY = tk.StringVar()
           spinboxGoalY_frame = tk.Frame(self)
           spinboxGoalY_frame.place(x= 870, y = 190)
-          spinboxInitX = tk.Spinbox(spinboxGoalY_frame, from_=0, to=19,width=8 ,textvariable=self.textGoalY)
+          spinboxInitX = tk.Spinbox(spinboxGoalY_frame, from_=0, to=19,width=8, wrap= True ,textvariable=self.textGoalY)
+          spinboxInitX.grid()
+
+          #Label Enter Limit----------------------------------------------------------------
+          titleInputLimit_frame = tk.Frame(self)
+          titleInputLimit_frame.place(x= 630, y=240, anchor="center")
+          tk.Label(titleInputLimit_frame,text="Choose Limit:",font= ("Times", 14,"bold"), fg = "black").grid(row=0)
+          
+          #NumericUpdown Limit--------------------------------------------------------------
+          self.textLimit = tk.StringVar()
+          spinboxLimit_frame = tk.Frame(self)
+          spinboxLimit_frame.place(x= 690, y = 230)
+          spinboxInitX = tk.Spinbox(spinboxLimit_frame, from_=1, to=400,width=38, wrap= True ,textvariable=self.textLimit)
           spinboxInitX.grid()
 
           #ComboBox Maze-------------------------------------------------------------------------
@@ -204,19 +216,23 @@ class Game(tk.Frame):
      def handleCombobox(self):
           if self.selectAlgorithm.get() == "BFS - Breadth First Search":
                return 1
-          elif self.selectAlgorithm.get() == "DLS - Depth Limit Search":
-               return 2
           elif self.selectAlgorithm.get() == "A* - A Star":
-               return 3
+               return 2
           elif self.selectAlgorithm.get() == "DFS - Depth First Search":
-               return 4
+               return 3
           else:
-               return 5
+               return 4
 
      #handle select value form Spinbox
      def handleSpinbox(self, element):
           number = element.get()
-          return int(number)
+          if number.isnumeric():
+               return int(number)
+          else:
+               if element is self.textLimit:             
+                    return 140
+               else:
+                    return 19
 
      #select Maze from combobox
      def handleSelectMaze(self):
@@ -250,7 +266,7 @@ def FindSolution():
      goal = (game.handleSpinbox(game.textGoalX), game.handleSpinbox(game.textGoalY))
 
      #Handle no algorithm selected
-     if game.handleCombobox() == 5:
+     if game.handleCombobox() == 4:
           messagebox.showinfo("Thông báo","Bạn chưa chọn thuật toán") 
      #Handle no maze selected
      if game.handleSelectMaze() == None:
@@ -275,17 +291,8 @@ def FindSolution():
                     problem = index.MazeProblem(init, goal, matrix)
                     soultion = bfs.breath_first_search(problem)
                     return soultion
-               #DLS
-               elif game.handleCombobox() == 2:
-                    game.initColor(matrix)
-                    game.update()
-
-                    problem = index.MazeProblem(init, goal, matrix)
-                    soultion = dls.iterative_deepening_search(problem)
-                    return solution
-                    # messagebox.showinfo("Thông báo","Bạn đã chọn thuật toán số 2 là DLS và nó chưa được thêm vào") 
                #A*
-               elif game.handleCombobox() == 3:
+               elif game.handleCombobox() == 2:
                     game.initColor(matrix)
                     game.update()
 
@@ -294,7 +301,7 @@ def FindSolution():
                     return solution
                     # messagebox.showinfo("Thông báo","Bạn đã chọn thuật toán số 3 là A* và nó chưa được thêm vào") 
                #DFS
-               elif game.handleCombobox() == 4:
+               elif game.handleCombobox() == 3:
                     game.initColor(matrix)
                     game.update()
 
@@ -306,12 +313,12 @@ def FindSolution():
 
 if __name__ == "__main__":
      window = tk.Tk()
-     window.resizable(1, 1)
-     # Tk_Width = 900
-     # Tk_Height = 650
-     # positionRight = int( window.winfo_screenwidth()/2 - Tk_Width/2 )
-     # positionDown = int( window.winfo_screenheight()/2 - Tk_Height/2 )
-     # window.geometry("{}x{}+{}+{}".format(920,555,positionRight, positionDown))
+     window.resizable(0, 0)
+     Tk_Width = 900
+     Tk_Height = 650
+     positionRight = int( window.winfo_screenwidth()/2 - Tk_Width/2 )
+     positionDown = int( window.winfo_screenheight()/2 - Tk_Height/2 )
+     window.geometry("{}x{}+{}+{}".format(950,580,positionRight, positionDown))
      game = Game(window)
 
      game.make_GUI()
