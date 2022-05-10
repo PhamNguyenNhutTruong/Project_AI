@@ -5,8 +5,8 @@ from tkinter import  ttk
 import a_start ,bfs, dfs, dls,index, maze
 from tkinter import messagebox 
 
-sizeOfMatrix = 10
-sizeOfCell = 50
+sizeOfMatrix = 20
+sizeOfCell = 25
 
 class Game(tk.Frame):
      def __init__(self, window):
@@ -15,7 +15,7 @@ class Game(tk.Frame):
           self.grid()
           self.master.title('Project AI')
           self.main_grid = tk.Frame(self, bg= "black", bd=3, width=400, height=400)
-          self.main_grid.grid(pady=(15, 15), padx=(15, 380))
+          self.main_grid.grid(pady=(15, 15), padx=(20, 380))
 
 
      def make_GUI(self):
@@ -37,13 +37,13 @@ class Game(tk.Frame):
 
           #Label Choose algorithm-----------------------------------------------------------
           labelChooseAlgorithm = tk.Frame(self)
-          labelChooseAlgorithm.place(x= 620, y=92, anchor="center")
+          labelChooseAlgorithm.place(x= 648, y=92, anchor="center")
           tk.Label(labelChooseAlgorithm,text="Choose Algorithm:",font= ("Times", 14, "bold"), fg = "black").grid(row=0)
 
           #ComboBox-------------------------------------------------------------------------
           self.selectAlgorithm = tk.StringVar()
           comboboxAlgorithm_frame = tk.Frame(self)
-          comboboxAlgorithm_frame.place(x= 700, y = 80)
+          comboboxAlgorithm_frame.place(x= 730, y = 80)
           comboboxAlgorithm = ttk.Combobox(comboboxAlgorithm_frame, width = 30, textvariable= self.selectAlgorithm)
                # Adding combobox drop down list
           comboboxAlgorithm['values'] = ("BFS - Breadth First Search", "DLS - Depth Limit Search", "A* - A Star", "DFS - Depth First Search")
@@ -52,113 +52,113 @@ class Game(tk.Frame):
 
           #Button run------------------------------------------------------------------------
           btnRun=tk.Button(self,text="Run Program",font=("Times",12,"bold"),bg="black",fg="white", width = 15, bd=0, command= lambda: self.setColorWithSolution(FindSolution()))
-          btnRun.place(x= 761, y= 300)
+          btnRun.place(x= 791, y= 340)
 
           #Button Clear------------------------------------------------------------------------
           btnClear=tk.Button(self,text="Clear Program",font=("Times",12,"bold"),bg="black",fg="white", width = 15, bd=0, command= lambda: self.clearScreen())
-          btnClear.place(x= 550, y= 300)
+          btnClear.place(x= 575, y= 340)
 
-          #Label title note-----------------------------------------------------------
+          #Label title note----------------------------------------------------------
           labelNote = tk.Frame(self)
-          labelNote.place(x= 580, y= 350, anchor="center")
+          labelNote.place(x= 606, y= 400, anchor="center")
           tk.Label(labelNote,text="NOTE: ",font= ("Times", 14, "bold underline"), fg = "black").grid(row=0)
           
           #Label Note Red-------------------------------------------------------------------------------
           lableRed_frame = tk.Frame(self)
-          lableRed_frame.place(x= 570, y= 400, anchor="center")
+          lableRed_frame.place(x= 590, y= 440, anchor="center")
           tk.Label(lableRed_frame, bg = 'red', width= 4, height= 2).grid(row=0)
 
           #Label Note Red text-------------------------------------------------------------------------------
           labelRedText_frame = tk.Frame(self)
-          labelRedText_frame.place(x= 676, y=400, anchor="center")
+          labelRedText_frame.place(x= 698, y=440, anchor="center")
           tk.Label(labelRedText_frame,text=": Đích (Quán Cà phê)",font= ("Times", 14, "roman"), fg = "black").grid(row=0)
 
           #Label Note Yellow-------------------------------------------------------------------------------
           lableYellow_frame = tk.Frame(self)
-          lableYellow_frame.place(x= 570, y= 460, anchor="center")
+          lableYellow_frame.place(x= 590, y= 490, anchor="center")
           tk.Label(lableYellow_frame, bg = 'yellow', width= 4, height= 2).grid(row=0)
 
           #Label Note Yellow text-------------------------------------------------------------------------------
           labelYellowText_frame = tk.Frame(self)
-          labelYellowText_frame.place(x= 650, y=460, anchor="center")
+          labelYellowText_frame.place(x= 668, y=490, anchor="center")
           tk.Label(labelYellowText_frame,text=": Nơi xuất phát",font= ("Times", 14, "roman"), fg = "black").grid(row=0)
 
           #Label Note Black-------------------------------------------------------------------------------
           lableBlack_frame = tk.Frame(self)
-          lableBlack_frame.place(x= 570, y= 522, anchor="center")
+          lableBlack_frame.place(x= 590, y= 543, anchor="center")
           tk.Label(lableBlack_frame, bg = 'black', width= 4, height= 2).grid(row=0)
 
           #Label Note Black text-------------------------------------------------------------------------------
           labelBlackText_frame = tk.Frame(self)
-          labelBlackText_frame.place(x= 711, y=522, anchor="center")
+          labelBlackText_frame.place(x=726 , y=543, anchor="center")
           tk.Label(labelBlackText_frame,text=": Tường (Đường cụt, hẻm cụt)",font= ("Times", 14, "roman"), fg = "black").grid(row=0)
 
      def inputValues_GUI(self):    
           #Label Title InitX----------------------------------------------------------------
           titleChooseInit_frame = tk.Frame(self)
-          titleChooseInit_frame.place(x= 595, y=130, anchor="center")
+          titleChooseInit_frame.place(x= 622, y=130, anchor="center")
           tk.Label(titleChooseInit_frame,text="Input Initial",font= ("Times", 14,"bold"), fg = "black").grid(row=0)
 
           #Init X-------------------------------------------------------------------------------
                #Label Enter InitX----------------------------------------------------------------
           titleInputInitX_frame = tk.Frame(self)
-          titleInputInitX_frame.place(x= 577, y=160, anchor="center")
+          titleInputInitX_frame.place(x= 602, y=160, anchor="center")
           tk.Label(titleInputInitX_frame,text="Enter x:",font= ("Times", 14,"roman"), fg = "black").grid(row=0)
           
                #NumericUpdown InitX--------------------------------------------------------------
           self.textInitX = tk.StringVar()
           spinboxInitX_frame = tk.Frame(self)
-          spinboxInitX_frame.place(x= 610, y = 150)
-          spinboxInitX = tk.Spinbox(spinboxInitX_frame, from_=0, to=9,width=8 ,textvariable=self.textInitX)
+          spinboxInitX_frame.place(x= 635, y = 150)
+          spinboxInitX = tk.Spinbox(spinboxInitX_frame, from_=0, to=19,width=8 ,textvariable=self.textInitX)
           spinboxInitX.grid()
 
           #Init Y-------------------------------------------------------------------------------
                #Label Enter InitY----------------------------------------------------------------
           titleInputInitY_frame = tk.Frame(self)
-          titleInputInitY_frame.place(x= 577, y=200, anchor="center")
+          titleInputInitY_frame.place(x= 602, y=200, anchor="center")
           tk.Label(titleInputInitY_frame,text="Enter y:",font= ("Times", 14,"roman"), fg = "black").grid(row=0)
           
                #NumericUpdown InitY--------------------------------------------------------------
           self.textInitY = tk.StringVar()
           spinboxInitY_frame = tk.Frame(self)
-          spinboxInitY_frame.place(x= 610, y = 190)
-          spinboxInitX = tk.Spinbox(spinboxInitY_frame, from_=0, to=9,width=8 ,textvariable=self.textInitY)
+          spinboxInitY_frame.place(x= 635, y = 190)
+          spinboxInitX = tk.Spinbox(spinboxInitY_frame, from_=0, to=19,width=8 ,textvariable=self.textInitY)
           spinboxInitX.grid()
 
           #Label Title Goal----------------------------------------------------------------
           titleChooseGoal_frame = tk.Frame(self)
-          titleChooseGoal_frame.place(x= 820, y=130, anchor="center")
+          titleChooseGoal_frame.place(x= 850, y=130, anchor="center")
           tk.Label(titleChooseGoal_frame,text="Input Goal",font= ("Times", 14,"bold"), fg = "black").grid(row=0)
 
           #Goal X-------------------------------------------------------------------------------
                #Label Enter GoalX----------------------------------------------------------------
           titleInputGoalX_frame = tk.Frame(self)
-          titleInputGoalX_frame.place(x= 805, y=160, anchor="center")
+          titleInputGoalX_frame.place(x= 835, y=160, anchor="center")
           tk.Label(titleInputGoalX_frame,text="Enter x:",font= ("Times", 14,"roman"), fg = "black").grid(row=0)
           
                #NumericUpdown GoalX--------------------------------------------------------------
           self.textGoalX = tk.StringVar()
           spinboxGoalX_frame = tk.Frame(self)
-          spinboxGoalX_frame.place(x= 840, y = 150)
-          spinboxInitX = tk.Spinbox(spinboxGoalX_frame, from_=0, to=9,width=8 ,textvariable=self.textGoalX)
+          spinboxGoalX_frame.place(x= 870, y = 150)
+          spinboxInitX = tk.Spinbox(spinboxGoalX_frame, from_=0, to=19,width=8 ,textvariable=self.textGoalX)
           spinboxInitX.grid()
 
                #Label Enter GoalY----------------------------------------------------------------
           titleInputGoalY_frame = tk.Frame(self)
-          titleInputGoalY_frame.place(x= 805, y=200, anchor="center")
+          titleInputGoalY_frame.place(x= 835, y=200, anchor="center")
           tk.Label(titleInputGoalY_frame,text="Enter y:",font= ("Times", 14,"roman"), fg = "black").grid(row=0)
           
                #NumericUpdown GoalY--------------------------------------------------------------
           self.textGoalY = tk.StringVar()
           spinboxGoalY_frame = tk.Frame(self)
-          spinboxGoalY_frame.place(x= 840, y = 190)
-          spinboxInitX = tk.Spinbox(spinboxGoalY_frame, from_=0, to=9,width=8 ,textvariable=self.textGoalY)
+          spinboxGoalY_frame.place(x= 870, y = 190)
+          spinboxInitX = tk.Spinbox(spinboxGoalY_frame, from_=0, to=19,width=8 ,textvariable=self.textGoalY)
           spinboxInitX.grid()
 
           #ComboBox Maze-------------------------------------------------------------------------
           self.selectMaze = tk.StringVar()
           comboboxMaze_frame = tk.Frame(self)
-          comboboxMaze_frame.place(x= 670, y = 230)
+          comboboxMaze_frame.place(x= 700, y = 292)
           comboboxMaze = ttk.Combobox(comboboxMaze_frame, width = 35, textvariable= self.selectMaze)
                # Adding combobox drop down list
           comboboxMaze['values'] = ("maze", "maze2", "maze3", "maze4", "maze5")
@@ -167,7 +167,7 @@ class Game(tk.Frame):
 
           #Label Choose Maze-----------------------------------------------------------
           labelChooseAlgorithm = tk.Frame(self)
-          labelChooseAlgorithm.place(x= 605, y=242, anchor="center")
+          labelChooseAlgorithm.place(x= 630, y=302, anchor="center")
           tk.Label(labelChooseAlgorithm,text="Choose Maze:",font= ("Times", 14, "bold"), fg = "black").grid(row=0)
 
      #initial color initialization
@@ -306,12 +306,12 @@ def FindSolution():
 
 if __name__ == "__main__":
      window = tk.Tk()
-     window.resizable(0, 0)
-     Tk_Width = 900
-     Tk_Height = 650
-     positionRight = int( window.winfo_screenwidth()/2 - Tk_Width/2 )
-     positionDown = int( window.winfo_screenheight()/2 - Tk_Height/2 )
-     window.geometry("{}x{}+{}+{}".format(920,555,positionRight, positionDown))
+     window.resizable(1, 1)
+     # Tk_Width = 900
+     # Tk_Height = 650
+     # positionRight = int( window.winfo_screenwidth()/2 - Tk_Width/2 )
+     # positionDown = int( window.winfo_screenheight()/2 - Tk_Height/2 )
+     # window.geometry("{}x{}+{}+{}".format(920,555,positionRight, positionDown))
      game = Game(window)
 
      game.make_GUI()
