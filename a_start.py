@@ -25,7 +25,7 @@ def a_start(problem):
 
         # Check if we found the goal
         if problem.goal_test(current_node.position):
-            return current_node.solution()
+            return current_node.solution(), closed_list
 
         # Expand children
         children = current_node.expand(problem)
@@ -68,13 +68,15 @@ def a_start(problem):
             # Add the child to the open list
             if child not in open_list:
                 open_list.append(child)
-    return None
+    return None, None
 
 
-# if __name__ == "__main__":
-#     init = (0, 9)
-#     goal = (9, 0)
-#     problem = MazeProblem(init, goal, maze3)
+if __name__ == "__main__":
+    init = (5, 8)
+    goal = (8, 7)
+    problem = MazeProblem(init, goal, maze3)
 
-#     solution = a_start(problem)
-#     print(solution)
+    solution,explored = a_start(problem)
+    print(solution)
+    print("=======================================================================")
+    print(explored)

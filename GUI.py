@@ -201,12 +201,16 @@ class Game(tk.Frame):
           cell_frame.grid(row= i, column= j, padx=1, pady=1)
 
      #Change color according to solutions
-     def setColorWithSolution(self, solution):
-          if solution != None:
+     def setColorWithSolution(self, result):
+          solution, explored = result[0], result[1]
+          if solution != None and explored != None:
                time.sleep(5)
-               for i in list(range(1, len(solution) - 1)):
-                    self.change_Color(solution[i][0], solution[i][1], "#00EE00")
-                    self.initColor(self.handleSelectMaze())
+               for i in list(range(1, len(explored))):
+                    if explored[i] in solution:
+                         self.change_Color(explored[i][0], explored[i][1], "#00EE00")
+                    else:
+                         self.change_Color(explored[i][0], explored[i][1], "#6699FF")
+                    # self.initColor(self.handleSelectMaze())
                     time.sleep(0.5)
                     self.update()
           else:
@@ -289,8 +293,8 @@ def FindSolution():
                     game.update()
 
                     problem = index.MazeProblem(init, goal, matrix)
-                    soultion = bfs.breath_first_search(problem)
-                    return soultion
+                    soultion, explored = bfs.breath_first_search(problem)
+                    return soultion,explored
                #A*
                elif game.handleCombobox() == 2:
                     game.initColor(matrix)
@@ -306,8 +310,8 @@ def FindSolution():
                     game.update()
 
                     problem = index.MazeProblem(init, goal, matrix)
-                    solution = dfs.depth_first_graph_search(problem)
-                    return solution
+                    solution, explored = dfs.depth_first_graph_search(problem)
+                    return solution, explored
                     # messagebox.showinfo("Thông báo","Bạn đã chọn thuật toán số 4 là DFS và nó chưa được thêm vào")
 
 
