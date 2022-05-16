@@ -171,7 +171,7 @@ class Game(tk.Frame):
           self.selectMaze = tk.StringVar()
           comboboxMaze_frame = tk.Frame(self)
           comboboxMaze_frame.place(x= 697, y = 292)
-          comboboxMaze = ttk.Combobox(comboboxMaze_frame, width = 35, textvariable= self.selectMaze)
+          comboboxMaze = ttk.Combobox(comboboxMaze_frame, width = 36, textvariable= self.selectMaze)
                # Adding combobox drop down list
           comboboxMaze['values'] = ("maze", "maze2", "maze3", "maze4", "maze5")
           comboboxMaze.grid(column = 1, row = 5)
@@ -286,6 +286,9 @@ def FindSolution():
      #Handle no maze selected
      if game.handleSelectMaze() == None:
           messagebox.showinfo("Thông báo","Bạn chưa chọn Maze") 
+     else:
+          game.initColor(matrix)
+          game.update()
 
      #Handle find solution
      if matrix[init[0]][init[1]] == 1 or matrix[goal[0]][goal[1]] == 1:
@@ -300,30 +303,19 @@ def FindSolution():
           else:
                #BFS
                if game.handleCombobox() == 1:  
-                    game.initColor(matrix)
-                    game.update()
-
                     problem = index.MazeProblem(init, goal, matrix)
                     soultion, explored = bfs.breath_first_search(problem)
                     return soultion,explored
                #A*
                elif game.handleCombobox() == 2:
-                    game.initColor(matrix)
-                    game.update()
-
                     problem = index.MazeProblem(init, goal, matrix)
                     solution, explored = a_start.a_star(problem)
                     return solution, explored
-                    # messagebox.showinfo("Thông báo","Bạn đã chọn thuật toán số 3 là A* và nó chưa được thêm vào") 
                #DFS
                elif game.handleCombobox() == 3:
-                    game.initColor(matrix)
-                    game.update()
-
                     problem = index.MazeProblem(init, goal, matrix)
                     solution, explored = dfs.depth_first_graph_search(problem)
                     return solution, explored
-                    # messagebox.showinfo("Thông báo","Bạn đã chọn thuật toán số 4 là DFS và nó chưa được thêm vào")
 
 
 if __name__ == "__main__":
