@@ -1,9 +1,9 @@
 from math import sqrt
-from maze import maze, maze3
+from maze import maze, maze3, maze4
 from index import Node, MazeProblem
 
 
-def a_start(problem):
+def a_star(problem):
     start_node = Node(problem.init)
 
     # open_list: frontier, closed_list: explored
@@ -25,14 +25,22 @@ def a_start(problem):
 
         # Check if we found the goal
         if problem.goal_test(current_node.position):
-            return current_node.solution(), closed_list
+            explored = [node.position for node in closed_list]
+
+            setOfSolution = current_node.solution()
+            del setOfSolution[len(setOfSolution) - 1]
+
+            setOfExplored = explored
+            del setOfExplored[len(setOfExplored) - 1]
+
+            return setOfSolution, setOfExplored
 
         # Expand children
         children = current_node.expand(problem)
 
         # Check len children
         if len(children) == 0:
-            return None
+            return None, None
 
         # Loop throught list children
         for child in children:
@@ -71,12 +79,13 @@ def a_start(problem):
     return None, None
 
 
-if __name__ == "__main__":
-    init = (5, 8)
-    goal = (8, 7)
-    problem = MazeProblem(init, goal, maze3)
+# if __name__ == "__main__":
+#     init = (0, 0)
 
-    solution,explored = a_start(problem)
-    print(solution)
-    print("=======================================================================")
-    print(explored)
+#     goal = (19, 5)
+#     problem = MazeProblem(init, goal, maze4)
+
+#     solution, explored = a_star(problem)
+#     print(solution)
+#     print("=============================================================")
+#     print(explored)

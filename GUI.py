@@ -163,14 +163,14 @@ class Game(tk.Frame):
           #NumericUpdown Limit--------------------------------------------------------------
           self.textLimit = tk.StringVar()
           spinboxLimit_frame = tk.Frame(self)
-          spinboxLimit_frame.place(x= 690, y = 230)
-          spinboxInitX = tk.Spinbox(spinboxLimit_frame, from_=1, to=400,width=38, wrap= True ,textvariable=self.textLimit)
+          spinboxLimit_frame.place(x= 697, y = 230)
+          spinboxInitX = tk.Spinbox(spinboxLimit_frame, from_=1, to=400,width=37, wrap= True ,textvariable=self.textLimit)
           spinboxInitX.grid()
 
           #ComboBox Maze-------------------------------------------------------------------------
           self.selectMaze = tk.StringVar()
           comboboxMaze_frame = tk.Frame(self)
-          comboboxMaze_frame.place(x= 700, y = 292)
+          comboboxMaze_frame.place(x= 697, y = 292)
           comboboxMaze = ttk.Combobox(comboboxMaze_frame, width = 35, textvariable= self.selectMaze)
                # Adding combobox drop down list
           comboboxMaze['values'] = ("maze", "maze2", "maze3", "maze4", "maze5")
@@ -202,17 +202,27 @@ class Game(tk.Frame):
 
      #Change color according to solutions
      def setColorWithSolution(self, result):
+          limit = 0
+          flag = 0
           solution, explored = result[0], result[1]
           if solution != None and explored != None:
-               time.sleep(5)
-               for i in list(range(1, len(explored))):
+               if self.handleSpinbox(self.textLimit) >= len(explored):
+                    limit = len(explored)
+               else:
+                    limit = self.handleSpinbox(self.textLimit)
+                    flag = 1
+               
+               time.sleep(2)
+               for i in list(range(1, limit)):
                     if explored[i] in solution:
                          self.change_Color(explored[i][0], explored[i][1], "#00EE00")
                     else:
                          self.change_Color(explored[i][0], explored[i][1], "#6699FF")
                     # self.initColor(self.handleSelectMaze())
-                    time.sleep(0.5)
+                    time.sleep(0.1)
                     self.update()
+               if flag == 1:
+                    messagebox.showinfo("Thông báo","Không đủ xăng để đi đến đích")
           else:
                messagebox.showinfo("Thông báo","Không thể tìm được đường đi") 
 
@@ -234,9 +244,9 @@ class Game(tk.Frame):
                return int(number)
           else:
                if element is self.textLimit:             
-                    return 140
+                    return 140 # [200 - 350]
                else:
-                    return 19
+                    return 19 # [0 - 19]
 
      #select Maze from combobox
      def handleSelectMaze(self):
@@ -257,6 +267,7 @@ class Game(tk.Frame):
      def clearScreen(self):
           self.make_GUI()
           self.inputValues_GUI()
+
 
 #======================================================================================================
 
@@ -301,8 +312,8 @@ def FindSolution():
                     game.update()
 
                     problem = index.MazeProblem(init, goal, matrix)
-                    solution = a_start.a_start(problem)
-                    return solution
+                    solution, explored = a_start.a_star(problem)
+                    return solution, explored
                     # messagebox.showinfo("Thông báo","Bạn đã chọn thuật toán số 3 là A* và nó chưa được thêm vào") 
                #DFS
                elif game.handleCombobox() == 3:
