@@ -32,6 +32,7 @@ class Node:
         return list(reversed(path_back))
 
     def __eq__(self, other):
+        # check if an object (first parameter) is an instance - Node 
         if isinstance(other, Node):
             return other.position == self.position
 

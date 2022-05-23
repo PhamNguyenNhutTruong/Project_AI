@@ -2,8 +2,9 @@ import time
 import tkinter as tk
 from collections import deque
 from tkinter import  ttk
-import a_start ,bfs, dfs, index, maze
+import a_star ,bfs, dfs, index, maze
 from tkinter import messagebox 
+import numpy as np
 
 sizeOfMatrix = 20
 sizeOfCell = 25
@@ -218,7 +219,6 @@ class Game(tk.Frame):
                          self.change_Color(explored[i][0], explored[i][1], "#00EE00")
                     else:
                          self.change_Color(explored[i][0], explored[i][1], "#6699FF")
-                    # self.initColor(self.handleSelectMaze())
                     time.sleep(0.1)
                     self.update()
                if flag == 1:
@@ -236,17 +236,30 @@ class Game(tk.Frame):
                return 3
           else:
                return 4
+     def randomValue(self, min, max):
+          value = np.random.seed(1)
+          value = np.random.randint(1, 400, size=1)
+          return value[0]
 
      #handle select value form Spinbox
      def handleSpinbox(self, element):
           number = element.get()
           if number.isnumeric():
-               return int(number)
+               if element is self.textLimit:
+                    if int(number) >= 0 and int(number) <= 400:
+                         return int(number)
+                    else:
+                         return 300
+               else:
+                    if int(number) >= 0 and int(number) <= 19:
+                         return int(number)
+                    else:
+                         return 0
           else:
                if element is self.textLimit:             
-                    return 140 # [200 - 350]
+                    return 300
                else:
-                    return 19 # [0 - 19]
+                    return 0
 
      #select Maze from combobox
      def handleSelectMaze(self):
@@ -282,13 +295,10 @@ def FindSolution():
 
      #Handle no algorithm selected
      if game.handleCombobox() == 4:
-          messagebox.showinfo("Thông báo","Bạn chưa chọn thuật toán") 
+          messagebox.showinfo("Thông báo","Bạn chưa chọn thuật toán\nMời bạn chọn thuật toán") 
      #Handle no maze selected
      if game.handleSelectMaze() == None:
-          messagebox.showinfo("Thông báo","Bạn chưa chọn Maze") 
-     else:
-          game.initColor(matrix)
-          game.update()
+          messagebox.showinfo("Thông báo","Bạn chưa chọn Maze\nMời bạn chọn Maze") 
 
      #Handle find solution
      if matrix[init[0]][init[1]] == 1 or matrix[goal[0]][goal[1]] == 1:
@@ -303,16 +313,25 @@ def FindSolution():
           else:
                #BFS
                if game.handleCombobox() == 1:  
+                    game.initColor(matrix)
+                    game.update()
+
                     problem = index.MazeProblem(init, goal, matrix)
                     soultion, explored = bfs.breath_first_search(problem)
                     return soultion,explored
                #A*
                elif game.handleCombobox() == 2:
+                    game.initColor(matrix)
+                    game.update()
+
                     problem = index.MazeProblem(init, goal, matrix)
-                    solution, explored = a_start.a_star(problem)
+                    solution, explored = a_star.a_star(problem)
                     return solution, explored
                #DFS
                elif game.handleCombobox() == 3:
+                    game.initColor(matrix)
+                    game.update()
+
                     problem = index.MazeProblem(init, goal, matrix)
                     solution, explored = dfs.depth_first_graph_search(problem)
                     return solution, explored
