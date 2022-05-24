@@ -21,7 +21,7 @@ class Game(tk.Frame):
 
      def make_GUI(self):
           #Matrix-------------------------------------------------------------------------
-          self.cells = []
+          # self.cells = []
           for i in range(sizeOfMatrix):
                for j in range(sizeOfMatrix):
                     cell_frame = tk.Frame(
@@ -236,10 +236,6 @@ class Game(tk.Frame):
                return 3
           else:
                return 4
-     def randomValue(self, min, max):
-          value = np.random.seed(1)
-          value = np.random.randint(1, 400, size=1)
-          return value[0]
 
      #handle select value form Spinbox
      def handleSpinbox(self, element):
